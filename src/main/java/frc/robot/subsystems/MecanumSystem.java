@@ -17,10 +17,12 @@ public class MecanumSystem extends SubsystemBase{
 
 
     //motors for mecanum
-    WPI_TalonSRX frontRight = new WPI_TalonSRX(2);
-    WPI_TalonSRX frontLeft = new WPI_TalonSRX(1);
+    
+    WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
+    WPI_TalonSRX frontRight = new WPI_TalonSRX(3);
+    WPI_TalonSRX backLeft = new WPI_TalonSRX(1);
     WPI_TalonSRX backRight = new WPI_TalonSRX(4);
-    WPI_TalonSRX backLeft = new WPI_TalonSRX(3);
+    
 
     
 
