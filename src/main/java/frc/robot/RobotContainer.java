@@ -36,6 +36,10 @@ public class RobotContainer {
     //initializing subsystems(
     public final AccelerometerSystem m_accelerometerSystem = new AccelerometerSystem('z',50);
     public final MecanumSystem m_mecanumSystem = new MecanumSystem();
+    public final LowerArm m_lowerArm = new LowerArm();
+    public final UpperArm m_upperArm = new UpperArm();
+
+
    // public final pneumaticBoard m_pneumatic = new pneumaticBoard();
     
     //private final FlyWheel m_flyWheelSystem = new FlyWheel();
@@ -46,6 +50,7 @@ public class RobotContainer {
     //public final ServoSystem m_servo = new ServoSystem();
 
     public final AutoCommand autoCommand = new AutoCommand(m_mecanumSystem);
+    
     //REMOVED , m_flyWheelSystem, m_linearActuator
 
     //public final ParallelCommandGroup autoshoot = new ParallelCommandGroup(new ActivateLinearActuator(1.0, m_linearActuator),
@@ -59,8 +64,9 @@ public class RobotContainer {
     XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
     Joystick joysticktwo = new Joystick(4);
+    Joystick analogstuff = new Joystick(3);
     //daniel hehe :)
-
+    public final ArmControlTests m_ArmControlTests = new ArmControlTests(m_lowerArm, m_upperArm, xbox, joystickone, joysticktwo, analogstuff);
     public final DriveWithMecanum m_DanCommand = new DriveWithMecanum(m_mecanumSystem, xbox, joystickone, joysticktwo);
     //public final StartEndCommand m_pneumaticControl = new StartEndCommand(() -> {m_pneumatic.TrueSolenoid();}, () -> {m_pneumatic.FalseSolenoid();}, m_pneumatic);
   public RobotContainer(){
@@ -87,6 +93,9 @@ public class RobotContainer {
     //new JoystickButton(xbox, ControllerConstants.A)
     //.toggleWhenPressed(m_pneumaticControl);
     m_mecanumSystem.setDefaultCommand(m_DanCommand);
+    m_lowerArm.setDefaultCommand(m_ArmControlTests);
+    m_upperArm.setDefaultCommand(m_ArmControlTests);
+
     //m_pneumatic.setDefaultCommand(m_pneumaticControl);
     // //Ball Collection Hook
 
