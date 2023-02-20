@@ -9,10 +9,10 @@ public final class Constants{
 
     }
   public static final class WheelConstants{
-      public static final int frontLeftMotorPort = 1;
-      public static final int backLeftMotorPort = 2;
-      public static final int frontRightMotorPort = 4;
-      public static final int backRightMotorPort = 3;
+      public static final int left1 = 1;
+      public static final int left2 = 2;
+      public static final int right1 = 3;
+      public static final int right2 = 4;
   }
   public static final class AimConstants{
       public static final int aimMotorPort = 15;

@@ -1,15 +1,16 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.TankDrive;
 // import frc.robot.subsystems.FlyWheel;
-import frc.robot.subsystems.MecanumSystem;
+import frc.robot.subsystems.TankDrive;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 
-public class DriveWithMecanum extends CommandBase {
+public class DriveWithTank extends CommandBase {
 
-  private final MecanumSystem m_mecanum;
+  private final TankDrive m_tank;
   private XboxController m_danxbox;
   private Joystick m_danJoystick;
   private Joystick m_danJoysticktwo;
@@ -32,9 +33,9 @@ public class DriveWithMecanum extends CommandBase {
   private double Zaxisfixed;
 
 
-  public DriveWithMecanum(MecanumSystem mecanumSystem, XboxController xbox, Joystick joystickone, Joystick joysticktwo){
+  public DriveWithTank(TankDrive tankSystem, XboxController xbox, Joystick joystickone, Joystick joysticktwo){
     m_danxbox = xbox;
-    m_mecanum = mecanumSystem;
+    m_tank = tankSystem;
     m_danJoystick = joystickone;
     m_danJoysticktwo = joysticktwo;
     kidmode = 0.3;
@@ -42,7 +43,7 @@ public class DriveWithMecanum extends CommandBase {
     
     thumb = false;
 
-    addRequirements(m_mecanum);
+    addRequirements(m_tank);
   }
 
   @Override
@@ -113,24 +114,24 @@ public class DriveWithMecanum extends CommandBase {
 
     if (thumb != false)
     {
-      m_mecanum.frontLeft(currmode*(-vert));
-      m_mecanum.frontRight(currmode*(vert));
-      m_mecanum.backLeft(currmode*(-vert));
-      m_mecanum.backRight(currmode*(vert));    
+      
+      // m_tank.(currmode*(vert));    
+      m_tank.drive(currmode*(vert), currmode*(vert));
+
     }
-    else if (m_danJoystick.getRawButton(3) != false)
+    else if (m_danJoystick.getRawButton(3) != false) 
     {
-      m_mecanum.frontLeft(-currmode*(-0.5*(Zaxisfixed)));
-      m_mecanum.frontRight(currmode*(0.5*(Zaxisfixed)));
-      m_mecanum.backLeft(-currmode*(0.5*(-Zaxisfixed)));
-      m_mecanum.backRight(currmode*(0.5*(Zaxisfixed)));
+      m_tank.drive(-currmode*(-0.5*(Zaxisfixed)), currmode*(0.5*(Zaxisfixed)));
+      // m_tank.frontRight(currmode*(0.5*(Zaxisfixed)));
+      // m_tank.backLeft(-currmode*(0.5*(-Zaxisfixed)));
+      // m_tank.backRight(currmode*(0.5*(Zaxisfixed)));
     }
     else
     {
-      m_mecanum.frontLeft(-currmode*(vertfixed-Zaxisfixed));
-      m_mecanum.frontRight(currmode*(vertfixed+Zaxisfixed));
-      m_mecanum.backLeft(-currmode*(vertfixed-Zaxisfixed));
-      m_mecanum.backRight(currmode*(vertfixed+Zaxisfixed));
+      m_tank.drive(-currmode*(vertfixed-Zaxisfixed), currmode*(vertfixed+Zaxisfixed));
+      // m_tank.frontRight(currmode*(vertfixed+Zaxisfixed));
+      // m_tank.backLeft(-currmode*(vertfixed-Zaxisfixed));
+      // m_tank.backRight(currmode*(vertfixed+Zaxisfixed));
       // m_mecanum.frontLeft(currmode*(-vertright));
       // m_mecanum.frontRight(currmode*(vert));
       // m_mecanum.backLeft(currmode*(-vertright));
@@ -140,9 +141,6 @@ public class DriveWithMecanum extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    m_mecanum.frontLeft(0);
-    m_mecanum.frontRight(0);
-    m_mecanum.backLeft(0);
-    m_mecanum.backRight(0);
+    m_tank.drive(0,0);
   }
 }

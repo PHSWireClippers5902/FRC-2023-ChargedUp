@@ -7,22 +7,22 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotContainer;
 // import frc.robot.subsystems.FlyWheel;
 // import frc.robot.subsystems.LinearActuator;
-import frc.robot.subsystems.MecanumSystem;
+import frc.robot.subsystems.TankDrive;
 import frc.robot.RobotContainer;
 
 public class AutoCommand extends SequentialCommandGroup {
-    private MecanumSystem m_mecanum;
+    private TankDrive m_tank;
     // private FlyWheel m_flyWheel;
     // private LinearActuator m_linearActuator;
 
-    public AutoCommand(MecanumSystem mecanumSystem){
+    public AutoCommand(TankDrive tankSystem){
 
         //took out: ,FlyWheel flyWheelSystem, LinearActuator linearActuatorSystem
-        m_mecanum = mecanumSystem;
+        m_tank = tankSystem;
         // m_flyWheel = flyWheelSystem;
         // m_linearActuator = linearActuatorSystem;
 
-        addRequirements(mecanumSystem);
+        addRequirements(tankSystem);
 
 
         //Adding Auto Commands

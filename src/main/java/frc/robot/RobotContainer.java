@@ -29,18 +29,18 @@ import static frc.robot.Constants.ControllerConstants;
 import static frc.robot.Constants.AimConstants;
 import static frc.robot.Constants.ClimbConstants;
 import edu.wpi.first.wpilibj.AnalogInput;
-import frc.robot.subsystems.AccelerometerSystem;
+//import frc.robot.subsystems.AccelerometerSystem;
 
 public class RobotContainer {
 
     //initializing subsystems(
-    public final AccelerometerSystem m_accelerometerSystem = new AccelerometerSystem('z',50);
-    public final MecanumSystem m_mecanumSystem = new MecanumSystem();
+   // public final AccelerometerSystem m_accelerometerSystem = new AccelerometerSystem('z',50);
+    public final TankDrive m_tankSystem = new TankDrive();
     public final LowerArm m_lowerArm = new LowerArm();
     public final UpperArm m_upperArm = new UpperArm();
 
 
-   // public final pneumaticBoard m_pneumatic = new pneumaticBoard();
+   public final pneumaticBoard m_pneumatic = new pneumaticBoard();
     
     //private final FlyWheel m_flyWheelSystem = new FlyWheel();
     //private final LinearActuator m_linearActuator = new LinearActuator();
@@ -49,7 +49,7 @@ public class RobotContainer {
     //public final ClimbSystem m_climbSystem = new ClimbSystem();
     //public final ServoSystem m_servo = new ServoSystem();
 
-    public final AutoCommand autoCommand = new AutoCommand(m_mecanumSystem);
+    public final AutoCommand autoCommand = new AutoCommand(m_tankSystem);
     
     //REMOVED , m_flyWheelSystem, m_linearActuator
 
@@ -65,17 +65,19 @@ public class RobotContainer {
     Joystick joystickone = new Joystick(2);
     Joystick joysticktwo = new Joystick(4);
     Joystick analogstuff = new Joystick(3);
-    //daniel hehe :)
     public final ArmControlTests m_ArmControlTests = new ArmControlTests(m_lowerArm, m_upperArm, xbox, joystickone, joysticktwo, analogstuff);
-    public final DriveWithMecanum m_DanCommand = new DriveWithMecanum(m_mecanumSystem, xbox, joystickone, joysticktwo);
-    //public final StartEndCommand m_pneumaticControl = new StartEndCommand(() -> {m_pneumatic.TrueSolenoid();}, () -> {m_pneumatic.FalseSolenoid();}, m_pneumatic);
+    public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
+   
+    public final StartEndCommand m_pneumaticControl = new StartEndCommand(() -> {m_pneumatic.TrueSolenoid();}, () -> {m_pneumatic.FalseSolenoid();}, m_pneumatic);
   public RobotContainer(){
     //Default Commands
     configureButtonBindings();
     //m_flyWheelSystem.setDefaultCommand(new ActivateFlyWheel(-.1, m_flyWheelSystem));
     //m_mecanumSystem.setDefaultCommand(new DriveWithMecanum(xbox, m_mecanumSystem));
     //m_UltrasonicSystem.setDefaultCommand(new CheckDistance(m_UltrasonicSystem));
-    m_accelerometerSystem.calibrate();
+    //m_accelerometerSystem.calibrate();
+    m_tankSystem.setDefaultCommand(new RunCommand(() -> {m_tankSystem.drive(.1,.1);}, m_tankSystem));
+    // m_tankSystem.setDefaultCommand(m_TeleDrive);
   }
   
 
@@ -92,7 +94,6 @@ public class RobotContainer {
     //daniel thrice
     //new JoystickButton(xbox, ControllerConstants.A)
     //.toggleWhenPressed(m_pneumaticControl);
-    m_mecanumSystem.setDefaultCommand(m_DanCommand);
     m_lowerArm.setDefaultCommand(m_ArmControlTests);
     m_upperArm.setDefaultCommand(m_ArmControlTests);
 
