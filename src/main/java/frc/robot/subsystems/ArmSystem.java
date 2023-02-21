@@ -25,10 +25,13 @@ public class ArmSystem extends SubsystemBase {
     lowerMotorOne = new CANSparkMax(ArmConstants.LowerArmMotorOnePort, MotorType.kBrushless);
     lowerMotorTwo = new CANSparkMax(ArmConstants.LowerArmMotorTwoPort, MotorType.kBrushless);
 
-    //Reset Motors
+    //Configure Motors
     upperMotor.restoreFactoryDefaults();
     lowerMotorOne.restoreFactoryDefaults();
     lowerMotorTwo.restoreFactoryDefaults();
+    upperMotor.setInverted(true);
+    lowerMotorOne.setInverted(true);
+    lowerMotorTwo.follow(lowerMotorOne);
 
     //Get encoders
     lowerEncoderOne = lowerMotorOne.getEncoder();
