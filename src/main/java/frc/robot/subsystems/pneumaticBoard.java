@@ -13,7 +13,7 @@ public class pneumaticBoard extends SubsystemBase {
   /** Creates a new pneumaticBoard. */
 
 
-  Solenoid exampleSingle = new Solenoid(20, PneumaticsModuleType.CTREPCM, 0);
+  Solenoid exampleSingle = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
   Compressor pcmCompressor = new Compressor(0, PneumaticsModuleType.CTREPCM);
   
 

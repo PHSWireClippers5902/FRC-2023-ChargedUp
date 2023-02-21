@@ -121,14 +121,21 @@ public class DriveWithTank extends CommandBase {
     }
     else if (m_danJoystick.getRawButton(3) != false) 
     {
-      m_tank.drive(-currmode*(-0.5*(Zaxisfixed)), currmode*(0.5*(Zaxisfixed)));
+      m_tank.drive(currmode*(-0.5*(Zaxisfixed)), currmode*(0.5*(Zaxisfixed)));
+      
+      
+      
+      
       // m_tank.frontRight(currmode*(0.5*(Zaxisfixed)));
       // m_tank.backLeft(-currmode*(0.5*(-Zaxisfixed)));
       // m_tank.backRight(currmode*(0.5*(Zaxisfixed)));
     }
     else
     {
-      m_tank.drive(-currmode*(vertfixed-Zaxisfixed), currmode*(vertfixed+Zaxisfixed));
+      m_tank.drive(currmode*(vertfixed-Zaxisfixed), currmode*(vertfixed+Zaxisfixed));
+      
+      
+      
       // m_tank.frontRight(currmode*(vertfixed+Zaxisfixed));
       // m_tank.backLeft(-currmode*(vertfixed-Zaxisfixed));
       // m_tank.backRight(currmode*(vertfixed+Zaxisfixed));

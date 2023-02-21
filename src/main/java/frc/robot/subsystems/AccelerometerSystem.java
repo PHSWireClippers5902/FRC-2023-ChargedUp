@@ -97,13 +97,13 @@ public class AccelerometerSystem extends SubsystemBase {
   @Override
   public void periodic() {
     updateValues();
-    SmartDashboard.putNumber("X Accel Zero", getAccel('x') - xOffSet);
-    SmartDashboard.putNumber("Y Accel Zero", getAccel('y') - yOffSet);
-    SmartDashboard.putNumber("Z Accel Zero", getAccel('z') - zOffSet);
-    SmartDashboard.putNumber("X Accel", getAccel('x'));
-    SmartDashboard.putNumber("Y Accel", getAccel('y'));
-    SmartDashboard.putNumber("Z Accel", getAccel('z'));
-    System.out.println("X: " + accel.getX() + " Y: " + accel.getY() + " Z: " + accel.getZ());
+    //SmartDashboard.putNumber("X Accel Zero", getAccel('x') - xOffSet);
+    //SmartDashboard.putNumber("Y Accel Zero", getAccel('y') - yOffSet);
+    //SmartDashboard.putNumber("Z Accel Zero", getAccel('z') - zOffSet);
+    //SmartDashboard.putNumber("X Accel", getAccel('x'));
+    //SmartDashboard.putNumber("Y Accel", getAccel('y'));
+    //SmartDashboard.putNumber("Z Accel", getAccel('z'));
+    //System.out.println("X: " + accel.getX() + " Y: " + accel.getY() + " Z: " + accel.getZ());
     // This method will be called once per scheduler run
   }
 }

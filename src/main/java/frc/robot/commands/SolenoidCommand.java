@@ -25,10 +25,10 @@ public class SolenoidCommand extends CommandBase {
   public void execute() {
     
     if(m_controller.getRawButton(1)){
-        m_pneumatics.TrueSolenoid();
-    }
-    else if(m_controller.getRawButton(2)){
-      m_pneumatics.FalseSolenoid();
-    }
+         m_pneumatics.TrueSolenoid();
+     }
+     else if(m_controller.getRawButton(2)){
+       m_pneumatics.FalseSolenoid();
+     }
   }
 }

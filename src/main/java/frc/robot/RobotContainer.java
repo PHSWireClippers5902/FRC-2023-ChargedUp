@@ -46,7 +46,7 @@ public class RobotContainer {
     
     //Commands
     public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
-    public final StartEndCommand m_pneumaticControl = new StartEndCommand(() -> {m_pneumatic.TrueSolenoid();}, () -> {m_pneumatic.FalseSolenoid();}, m_pneumatic);
+    public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff);
   
   //Default Constructor
   public RobotContainer(){
@@ -59,7 +59,7 @@ public class RobotContainer {
 
   private void configureButtonBindings(){ 
     
-    new JoystickButton(xbox, ControllerConstants.A)
+    new JoystickButton(analogstuff, 1)
     .toggleWhenPressed(m_pneumaticControl);
   }
 
