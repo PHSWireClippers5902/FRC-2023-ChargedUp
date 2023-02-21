@@ -101,7 +101,7 @@ public class AccelerometerSystem extends SubsystemBase {
     SmartDashboard.putNumber("X Accel", getAccel('x') - xOffSet);
     SmartDashboard.putNumber("Y Accel", getAccel('y') - yOffSet);
     SmartDashboard.putNumber("Z Accel", getAccel('z') - zOffSet);
-    SmartDashboard.putNumber("yoffset", yOffSet);
+    SmartDashboard.putBoolean("tilted", isTilted());
     System.out.println("X: " + accel.getX() + " Y: " + accel.getY() + " Z: " + accel.getZ());
     // This method will be called once per scheduler run
   }
