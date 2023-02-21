@@ -6,6 +6,7 @@ import static frc.robot.Constants.WheelConstants;
 
 import javax.swing.text.LayeredHighlighter;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Encoder;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -19,7 +20,7 @@ public class TankDrive extends SubsystemBase{
     // public Encoder m_encoderBR;
     // public Encoder m_encoderBL;
     
-    public DifferentialDrive m_tankDrive;
+    public DifferentialDrive m_Drive;
 
     //motors for mecanum
     
@@ -32,36 +33,24 @@ public class TankDrive extends SubsystemBase{
     MotorControllerGroup rightmotors = new MotorControllerGroup(right1, right2);
     
     public TankDrive(){
-      leftmotors.setInverted(true);
-      m_tankDrive = new DifferentialDrive(leftmotors, rightmotors);
+      rightmotors.setInverted(true);
+      m_Drive = new DifferentialDrive(leftmotors, rightmotors);
+      m_Drive.setDeadband(0.01);
     }
-    @Override
-    public void periodic(){
-      leftmotors.set(.1);;
-      rightmotors.setVoltage(6);
-    }
+    // @Override
+    // public void periodic(){
+    //   // System.out.println("Left 1,2: " + left1.get() + " " + left2.get());
+    //   // System.out.println("Right 1,2: " + right1.get() + " " + right2.get());
+    //   // leftmotors.set(-.2);
+    //   // rightmotors.set(-.2);
+    // }
 
    // public double getPosition(){
      //   return m_encoder.getPosition();
    // }
-
-    // public double FLdistance(){
-    //     m_encoderFR = frontRight.getEncoder();
-    //     return 1;
-    // }
-    // public double FRdistance(){
-    //     return 1;
-    // }
-    // public double BLdistance(){
-    //     return 1;
-    // }
-    // public double BRdistance(){
-    //     return 1;
-    // }
-
     
     public void drive(double left, double right){
-        m_tankDrive.tankDrive(left,right);
+        m_Drive.tankDrive(left,right, false);
     }
  
 }

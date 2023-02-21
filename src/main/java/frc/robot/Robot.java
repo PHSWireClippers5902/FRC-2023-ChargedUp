@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.subsystems.*;
 import frc.robot.RobotContainer;
-import frc.robot.commands.AutoCommand;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -101,7 +100,6 @@ public class Robot extends TimedRobot {
     //RobotContainer.lightSystem.getAllianceColor();
     startTime = Timer.getFPGATimestamp();
     //RobotContainer.lightSystem.getAllianceColor();
-    m_robotContainer.autoCommand.schedule();
   }
 
   /**

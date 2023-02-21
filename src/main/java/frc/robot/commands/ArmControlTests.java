@@ -14,9 +14,9 @@ public class ArmControlTests extends CommandBase{
     private final UpperArm m_upperArm;
     private final LowerArm m_lowerArm;
     
-    private XboxController m_danxbox;
-    private Joystick m_danJoystick;
-    private Joystick m_danJoysticktwo;
+    private XboxController m_xbox;
+    private Joystick m_Joystick;
+    private Joystick m_Joystick2;
     private Joystick m_analogstuff;
     private double vertAxis;
     private int povForward;
@@ -26,10 +26,10 @@ public class ArmControlTests extends CommandBase{
         
         m_upperArm = upperArm;
         m_lowerArm = lowerArm;
-        m_danxbox = xbox;
+        m_xbox = xbox;
         
-        m_danJoystick = joystickone;
-        m_danJoysticktwo = joysticktwo;
+        m_Joystick = joystickone;
+        m_Joystick2 = joysticktwo;
         m_analogstuff = analogstuff;
 
         addRequirements(m_lowerArm);
@@ -37,12 +37,10 @@ public class ArmControlTests extends CommandBase{
 
     }
     @Override public void execute(){
-        vertAxis = m_danJoysticktwo.getY();
+        vertAxis = m_Joystick2.getY();
         
         button3 = m_analogstuff.getRawButton(3);
         if (button3 != false){
-            m_lowerArm.bottomleftencoderoutput();
-            m_lowerArm.bottomrightencoderoutput();
             m_upperArm.upperencoderoutput();
         }
     }
