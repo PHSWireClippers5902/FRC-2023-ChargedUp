@@ -36,21 +36,27 @@ import edu.wpi.first.wpilibj.AnalogInput;
 
 public class RobotContainer {
 
-    //Initializing Subsystems
-    private ArmSystem m_arm = new ArmSystem();
-
-    //Controls
-    Joystick joystickone = new Joystick(2);
+    //Controllers
+    public Joystick joystickone = new Joystick(2);
     Joystick joysticktwo = new Joystick(4);
     Joystick analogstuff = new Joystick(3);
 
+    //Initializing Subsystems
+    private ArmSystem m_arm = new ArmSystem();
+
+    //Creating Commands
+    private MoveArm arm_control = new MoveArm(joystickone, m_arm);
+
+
   public RobotContainer(){
     //Default Commands
+    //m_arm.setDefaultCommand(arm_control);
+
     configureButtonBindings();
   }
   
 
 
-  private void configureButtonBindings(){ 
+  private void configureButtonBindings(){
   }
 }

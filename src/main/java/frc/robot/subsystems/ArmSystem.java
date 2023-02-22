@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import frc.robot.RobotContainer;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -11,6 +12,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmSystem extends SubsystemBase {
@@ -47,6 +50,16 @@ public class ArmSystem extends SubsystemBase {
     upperController = upperMotor.getPIDController();
     lowerControllerOne = lowerMotorOne.getPIDController();
     lowerControllerTwo = lowerMotorTwo.getPIDController();
+
+    //Configure PID constants (WARNING!! Arbitrary!! Tune these)
+    upperController.setP(1);
+    lowerControllerOne.setP(1);
+    lowerControllerTwo.setP(1);
+
+    upperController.setD(.1);
+    lowerControllerOne.setD(.1);
+    lowerControllerTwo.setD(.1);
+
   }
 
 
@@ -56,5 +69,15 @@ public class ArmSystem extends SubsystemBase {
     SmartDashboard.putNumber("Lower Arm One", lowerEncoderOne.getPosition());
     SmartDashboard.putNumber("Lower Arm Two", lowerEncoderTwo.getPosition());
     SmartDashboard.putNumber("Upper Arm", upperEncoder.getPosition());
+    System.out.println(RobotContainer.joystickone.getY());
+  }
+
+  public void raiseUpperArm(double position){
+    double scaledPosition = position*ArmConstants.UpperRange;
+    upperController.setReference(scaledPosition, CANSparkMax.ControlType.kPosition);
+  }
+  public void raiseLowerArm (double position){
+    double scaledPosition = position*ArmConstants.LowerRange;
+    lowerControllerOne.setReference(scaledPosition, CANSparkMax.ControlType.kPosition);
   }
 }
