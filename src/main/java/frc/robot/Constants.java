@@ -9,18 +9,22 @@ public final class Constants{
 
     }
   public static final class WheelConstants{
-      public static final int frontLeftMotorPort = 1;
-      public static final int backLeftMotorPort = 2;
-      public static final int frontRightMotorPort = 4;
-      public static final int backRightMotorPort = 3;
+      public static final int left1 = 1;
+      public static final int left2 = 2;
+      public static final int right1 = 4;
+      public static final int right2 = 3;
   }
-  public static final class ArmConstants{
-      public static final int LowerArmMotorOnePort = 5; 
-      public static final int LowerArmMotorTwoPort = 6;
-      public static final int UpperArmMotorPort = 7;
-      public static final double UpperRange = 25;
-      public static final double LowerRange = 8;
-
+  public static final class AimConstants{
+      public static final int aimMotorPort = 15;
+      public static final double P = 0.7; 
+      public static final double I = 0.00001;
+      public static final double D = 0; 
+      public static final double Iz = 0; 
+      public static final double FF = 0; 
+      public static final double MaxOutput = .1; 
+      public static final double MinOutput = -0.1;
+      public static final float MotorUpPosition = 23;
+      public static final float MotorDownPosition = (float) 0.5;
   }
   public static final class ClimbConstants{
     public static final int climbMotorPort = 10;
