@@ -78,8 +78,6 @@ public class Robot extends TimedRobot {
       //System.out.println("Y: " + m_robotContainer.limelight.getY());
       //System.out.println("Tag ID is: " + m_robotContainer.limelight.getTagID() + " and pipeline is " + m_robotContainer.limelight.getPipeline());
       //System.out.println("Dist.: " + m_robotContainer.limelight.getDistance());
-
-
   }
 
   /**

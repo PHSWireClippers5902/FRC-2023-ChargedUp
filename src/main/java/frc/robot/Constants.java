@@ -18,8 +18,8 @@ public final class Constants{
       public static final int LowerArmMotorOnePort = 5; 
       public static final int LowerArmMotorTwoPort = 6;
       public static final int UpperArmMotorPort = 7;
-      public static final double UpperRange = 25;
-      public static final double LowerRange = 8;
+      public static final double UpperRange = 20;
+      public static final double LowerRange = 25;
 
   }
   public static final class ClimbConstants{
