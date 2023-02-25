@@ -14,6 +14,11 @@ public final class Constants{
       public static final int right1 = 4;
       public static final int right2 = 3;
   }
+  public static final class ArmConstants{
+    public static final int LowerArmMotorOnePort = 5; 
+    public static final int LowerArmMotorTwoPort = 6;
+    public static final int UpperArmMotorPort = 7;
+}
   public static final class AimConstants{
       public static final int aimMotorPort = 15;
       public static final double P = 0.7; 

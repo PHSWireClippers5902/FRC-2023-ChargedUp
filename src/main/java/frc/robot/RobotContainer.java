@@ -36,8 +36,7 @@ public class RobotContainer {
     //initializing subsystems
     public final TankDrive m_tankSystem = new TankDrive();
     public final pneumaticBoard m_pneumatic = new pneumaticBoard();
-  
-
+    public final DriveEncoder m_encoder = new DriveEncoder();
     //Controller
     XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
@@ -45,9 +44,8 @@ public class RobotContainer {
     Joystick analogstuff = new Joystick(3);
     
     //Commands
-    public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
+    public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, m_encoder, xbox, joystickone, joysticktwo, analogstuff);
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff);
-  
   //Default Constructor
   public RobotContainer(){
     configureButtonBindings();
@@ -59,8 +57,8 @@ public class RobotContainer {
 
   private void configureButtonBindings(){ 
     
-    new JoystickButton(analogstuff, 1)
-    .toggleWhenPressed(m_pneumaticControl);
+   // new JoystickButton(analogstuff, 1)
+   // .toggleWhenPressed(m_pneumaticControl);
   }
 
   public Joystick getJoystick() {

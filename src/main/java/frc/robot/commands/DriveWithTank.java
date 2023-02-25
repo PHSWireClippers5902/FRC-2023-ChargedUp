@@ -2,6 +2,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.TankDrive;
+import frc.robot.subsystems.DriveEncoder;
 // import frc.robot.subsystems.FlyWheel;
 import frc.robot.subsystems.TankDrive;
 import edu.wpi.first.wpilibj.XboxController;
@@ -10,10 +11,12 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class DriveWithTank extends CommandBase {
 
+  private final DriveEncoder m_DriveEncoder;
   private final TankDrive m_tank;
   private XboxController m_danxbox;
   private Joystick m_danJoystick;
   private Joystick m_danJoysticktwo;
+  private Joystick m_analogstuff;
   private double vert;
   private double vertright;
   private double kidmode;
@@ -31,18 +34,20 @@ public class DriveWithTank extends CommandBase {
   private boolean init;
   private double vertfixed;
   private double Zaxisfixed;
+  private double povtest;
+  private boolean analogbutton3;
+  private int povtest2;
 
-
-  public DriveWithTank(TankDrive tankSystem, XboxController xbox, Joystick joystickone, Joystick joysticktwo){
+  public DriveWithTank(TankDrive tankSystem, DriveEncoder encoderSystem, XboxController xbox, Joystick joystickone, Joystick joysticktwo, Joystick analogstuff){
     m_danxbox = xbox;
     m_tank = tankSystem;
     m_danJoystick = joystickone;
     m_danJoysticktwo = joysticktwo;
     kidmode = 0.3;
     adultmode = 0.7;
-    
+    m_analogstuff = analogstuff;
     thumb = false;
-
+    m_DriveEncoder = encoderSystem;
     addRequirements(m_tank);
   }
 
@@ -58,6 +63,9 @@ public class DriveWithTank extends CommandBase {
     thumb = m_danJoystick.getRawButton(2);
     rightbump = m_danJoystick.getRawButton(3);
     leftbump = m_danJoystick.getRawButton(4);
+    analogbutton3 = m_analogstuff.getRawButton(3);
+  
+
     // vert = m_danxbox.getLeftY();
     // vertright = m_danxbox.getRightY();
     // rightbump = m_danxbox.getRightBumper();
@@ -110,8 +118,9 @@ public class DriveWithTank extends CommandBase {
       currmode = adultmode;
     }
     
-    
-
+    if (analogbutton3 != false){
+      m_DriveEncoder.print();
+    }
     if (thumb != false)
     {
       
@@ -144,6 +153,12 @@ public class DriveWithTank extends CommandBase {
       // m_mecanum.backLeft(currmode*(-vertright));
       // m_mecanum.backRight(currmode*(vert)); 
     }
+    // if(povtest != -1)
+    // {
+
+    
+    // m_tank.drive(0.2,0.2);
+    // }
   }
 
   @Override

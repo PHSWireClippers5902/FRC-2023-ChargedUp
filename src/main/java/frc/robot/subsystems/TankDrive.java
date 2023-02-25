@@ -12,6 +12,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Constants.WheelConstants;
+import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class TankDrive extends SubsystemBase{
 
 
@@ -21,6 +24,7 @@ public class TankDrive extends SubsystemBase{
     // public Encoder m_encoderBL;
     
     public DifferentialDrive m_Drive;
+    
 
     //motors for mecanum
     
@@ -32,8 +36,10 @@ public class TankDrive extends SubsystemBase{
     MotorControllerGroup leftmotors = new MotorControllerGroup(left1, left2);
     MotorControllerGroup rightmotors = new MotorControllerGroup(right1, right2);
     
+    
+
     public TankDrive(){
-      rightmotors.setInverted(true);
+       leftmotors.setInverted(true);
       m_Drive = new DifferentialDrive(leftmotors, rightmotors);
       m_Drive.setDeadband(0.01);
     }
