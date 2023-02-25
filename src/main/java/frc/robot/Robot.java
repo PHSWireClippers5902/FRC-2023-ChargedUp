@@ -59,6 +59,9 @@ public class Robot extends TimedRobot {
     CameraServer.startAutomaticCapture(0);
     CameraServer.startAutomaticCapture(1);
 
+    m_robotContainer.m_gyro.calibrate();
+    System.out.println("Calibrate!!");
+
   }
 
 

@@ -13,12 +13,12 @@ public class AutoBalance extends CommandBase {
   private GyroscopeSystem m_gyro;
   private TankDrive m_tank;
   private double kP;
-  private boolean tilt;
+  private boolean isTilted;
 
   public AutoBalance(GyroscopeSystem gyro, TankDrive tank) {
     m_gyro = gyro;
     m_tank = tank;
-    kP = 0.008;
+    kP = 0.1;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_gyro, m_tank);
   }
@@ -26,20 +26,16 @@ public class AutoBalance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    tilt = m_gyro.isTilted('z');
+    isTilted = m_gyro.isTilted('z');
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_tank.drive(-kP*m_gyro.getTilt('z'), -kP*m_gyro.getTilt('z'));
-    System.out.println("THE GYRO IS RUNNING FROM THE CHARGE STATION");
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  
+    isTilted = m_gyro.isTilted('z');
+    if (isTilted){
+    m_tank.drive(-kP*m_gyro.getTilt('z'), -kP*m_gyro.getTilt('z'));}
+    System.out.println("AutoBalance is running, is tilted: " + isTilted);
   }
 
   // Returns true when the command should end.

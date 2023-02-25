@@ -54,10 +54,11 @@ public class RobotContainer {
   
   //Default Constructor
   public RobotContainer(){
+    m_gyro.calibrate();
     configureButtonBindings();
 
     //Default Commands
-    m_tankSystem.setDefaultCommand(m_TeleDrive);
+    m_tankSystem.setDefaultCommand(m_autoBalance);
     m_pneumatic.setDefaultCommand(m_pneumaticControl);
   }
 
