@@ -56,9 +56,6 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putData("Auto choices", m_chooser);
     System.out.println("Robot Init - NOW");
 
-    CameraServer.startAutomaticCapture(0);
-    CameraServer.startAutomaticCapture(1);
-
   }
 
 
@@ -81,8 +78,6 @@ public class Robot extends TimedRobot {
       //System.out.println("Y: " + m_robotContainer.limelight.getY());
       //System.out.println("Tag ID is: " + m_robotContainer.limelight.getTagID() + " and pipeline is " + m_robotContainer.limelight.getPipeline());
       //System.out.println("Dist.: " + m_robotContainer.limelight.getDistance());
-
-
   }
 
   /**
@@ -99,8 +94,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_robotContainer.m_aimSystem.setPosition(28);
-    m_robotContainer.m_climbSystem.setPosition(0);
+    //m_robotContainer.m_aimSystem.setPosition(28);
+    //m_robotContainer.m_climbSystem.setPosition(0);
     m_autoSelected = m_chooser.getSelected();
     System.out.println("Auto selected: " + m_autoSelected);
     //RobotContainer.lightSystem.getAllianceColor();
@@ -136,8 +131,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     //RobotContainer.lightSystem.getAllianceColor();
-    m_robotContainer.m_servo.hookServo.setAngle(180);
-    m_robotContainer.m_servo.ballServo.setAngle(0);
    }
 
   /**
