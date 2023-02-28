@@ -46,11 +46,12 @@ public class RobotContainer {
 
     //Creating Commands
     private MoveArmVelocity arm_control = new MoveArmVelocity(joystickone, joysticktwo, m_arm);
+    private MoveArmPosition MaintainPosition = new MoveArmPosition(joystickone, joysticktwo, m_arm);
 
 
   public RobotContainer(){
     //Default Commands
-    m_arm.setDefaultCommand(arm_control);
+    m_arm.setDefaultCommand(MaintainPosition);
 
     configureButtonBindings();
   }
