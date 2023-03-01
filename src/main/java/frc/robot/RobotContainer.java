@@ -39,18 +39,19 @@ public class RobotContainer {
     public final TankDrive m_tankSystem = new TankDrive();
     public final PneumaticBoard m_pneumatic = new PneumaticBoard();
     public final GyroscopeSystem m_gyro = new GyroscopeSystem();
-  
+    public final ArmSystem m_arm = new ArmSystem();
 
     //Controller
     XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
-    Joystick joysticktwo = new Joystick(4);
-    Joystick analogstuff = new Joystick(3);
+    Joystick joysticktwo = new Joystick(1);
+    Joystick analogstuff = new Joystick(0);
     
     //Commands
     public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
-    public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff);
+    public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
     public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
+    public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
   
   //Default Constructor
   public RobotContainer(){
@@ -58,8 +59,9 @@ public class RobotContainer {
     configureButtonBindings();
 
     //Default Commands
-    m_tankSystem.setDefaultCommand(m_autoBalance);
+    m_tankSystem.setDefaultCommand(m_TeleDrive);
     m_pneumatic.setDefaultCommand(m_pneumaticControl);
+    m_arm.setDefaultCommand(m_velocity);
   }
 
   private void configureButtonBindings(){ 
@@ -67,17 +69,16 @@ public class RobotContainer {
     new JoystickButton(analogstuff, 1)
     .toggleWhenPressed(m_pneumaticControl);
     
-    new JoystickButton(analogstuff,5)
+    new JoystickButton(joystickone,5)
+    .whenPressed(m_autoBalance);
+
+    new JoystickButton(xbox, 3)
     .whenPressed(m_autoBalance);
   }
-
-    
 
   public Joystick getJoystick() {
     return joystickone;
   }
-
-
 
   public XboxController getXbox() {
     return xbox;

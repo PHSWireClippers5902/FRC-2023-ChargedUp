@@ -14,7 +14,7 @@ public class UpperArm extends SubsystemBase{
 
     public void upperencoderoutput(){
         double upperdegrees = upperarm.getPosition();
-        System.out.println("CANCoder position is: " + upperdegrees);
+       // System.out.println("CANCoder position is: " + upperdegrees);
     }
 
     public void setSpeed(double speed){
