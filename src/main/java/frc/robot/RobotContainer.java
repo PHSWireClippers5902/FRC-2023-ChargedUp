@@ -54,7 +54,9 @@ public class RobotContainer {
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff);
     public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
   
+    private MoveArmPosition MaintainPosition = new MoveArmPosition(joystickone, joysticktwo, m_arm);
     public final MoveArmVelocity arm_control = new MoveArmVelocity(joystickone, joysticktwo, m_arm);
+    
   public RobotContainer(){
     //Default Commands
     configureButtonBindings();
