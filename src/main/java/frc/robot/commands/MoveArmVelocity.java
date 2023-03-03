@@ -26,10 +26,10 @@ public class MoveArmVelocity extends CommandBase {
     @Override
     public void execute() {
         //lowervelocity = joystickone.getY()*.3;
-        lowervelocity = xbox.getLeftY() * 0.2;
+        lowervelocity = xbox.getLeftY() * -0.1;
         arm.setLowerSpeed(lowervelocity);
         //uppervelocity = joysticktwo.getY()*.3;
-        uppervelocity = xbox.getRightY() * 0.2;
+        uppervelocity = xbox.getRightY() * 0.1;
         arm.setUpperSpeed(uppervelocity);
 
         System.out.println("lower: " + lowervelocity + " upper: " + uppervelocity);

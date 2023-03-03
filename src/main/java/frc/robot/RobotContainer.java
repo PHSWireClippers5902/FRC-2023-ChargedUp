@@ -38,7 +38,7 @@ public class RobotContainer {
     //initializing subsystems
     public final TankDrive m_tankSystem = new TankDrive();
     public final PneumaticBoard m_pneumatic = new PneumaticBoard();
-    public final GyroscopeSystem m_gyro = new GyroscopeSystem();
+   // public final GyroscopeSystem m_gyro = new GyroscopeSystem();
     public final ArmSystem m_arm = new ArmSystem();
 
     //Controller
@@ -50,12 +50,13 @@ public class RobotContainer {
     //Commands
     public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
-    public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
+   // public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
     public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
+    public AutoCommand m_auto = new AutoCommand(m_tankSystem, m_pneumatic);
   
   //Default Constructor
   public RobotContainer(){
-    m_gyro.calibrate();
+  //  m_gyro.calibrate();
     configureButtonBindings();
 
     //Default Commands
@@ -69,11 +70,11 @@ public class RobotContainer {
     new JoystickButton(analogstuff, 1)
     .toggleWhenPressed(m_pneumaticControl);
     
-    new JoystickButton(joystickone,5)
-    .whenPressed(m_autoBalance);
+    // new JoystickButton(joystickone,5)
+    // .whenPressed(m_autoBalance);
 
-    new JoystickButton(xbox, 3)
-    .whenPressed(m_autoBalance);
+    // new JoystickButton(xbox, 3)
+    // .whenPressed(m_autoBalance);
   }
 
   public Joystick getJoystick() {
