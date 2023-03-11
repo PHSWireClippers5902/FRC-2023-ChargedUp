@@ -26,7 +26,6 @@ import edu.wpi.first.wpilibj.PneumaticHub;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import static frc.robot.Constants.ControllerConstants;
-import static frc.robot.Constants.AimConstants;
 import static frc.robot.Constants.ClimbConstants;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.subsystems.GyroscopeSystem;
@@ -35,18 +34,21 @@ import frc.robot.commands.AutoBalance;
 
 public class RobotContainer {
 
-    //initializing subsystems
+    
+
+    //Initializing Subsystems
+    private ArmSystem m_arm = new ArmSystem();
     public final TankDrive m_tankSystem = new TankDrive();
     public final PneumaticBoard m_pneumatic = new PneumaticBoard();
-   // public final GyroscopeSystem m_gyro = new GyroscopeSystem();
     public final ArmSystem m_arm = new ArmSystem();
-
-    //Controller
+    public final GyroscopeSystem m_gyro = new GyroscopeSystem();
+    
+    //Controls
     XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
     Joystick joysticktwo = new Joystick(1);
     Joystick analogstuff = new Joystick(0);
-    
+
     //Commands
     public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
@@ -54,11 +56,14 @@ public class RobotContainer {
     public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
     public AutoCommand m_auto = new AutoCommand(m_tankSystem, m_pneumatic);
   
-  //Default Constructor
+    private MoveArmPosition MaintainPosition = new MoveArmPosition(joystickone, joysticktwo, m_arm);
+    public final MoveArmVelocity arm_control = new MoveArmVelocity(joystickone, joysticktwo, m_arm);
+    
   public RobotContainer(){
-  //  m_gyro.calibrate();
+    //Default Commands
     configureButtonBindings();
-
+    m_gyro.calibrate();
+    m_arm.setDefaultCommand(arm_control);
     //Default Commands
     m_tankSystem.setDefaultCommand(m_TeleDrive);
     m_pneumatic.setDefaultCommand(m_pneumaticControl);
@@ -84,5 +89,4 @@ public class RobotContainer {
   public XboxController getXbox() {
     return xbox;
   }
-
 }
