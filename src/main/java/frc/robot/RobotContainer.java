@@ -40,19 +40,21 @@ public class RobotContainer {
     private ArmSystem m_arm = new ArmSystem();
     public final TankDrive m_tankSystem = new TankDrive();
     public final PneumaticBoard m_pneumatic = new PneumaticBoard();
+    public final ArmSystem m_arm = new ArmSystem();
     public final GyroscopeSystem m_gyro = new GyroscopeSystem();
-
+    
     //Controls
     XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
-    Joystick joysticktwo = new Joystick(4);
-    Joystick analogstuff = new Joystick(3);
+    Joystick joysticktwo = new Joystick(1);
+    Joystick analogstuff = new Joystick(0);
 
-    // command initialization
     //Commands
     public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
-    public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff);
-    public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
+    public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
+   // public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
+    public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
+    public AutoCommand m_auto = new AutoCommand(m_tankSystem, m_pneumatic);
   
     private MoveArmPosition MaintainPosition = new MoveArmPosition(joystickone, joysticktwo, m_arm);
     public final MoveArmVelocity arm_control = new MoveArmVelocity(joystickone, joysticktwo, m_arm);
@@ -65,12 +67,26 @@ public class RobotContainer {
     //Default Commands
     m_tankSystem.setDefaultCommand(m_TeleDrive);
     m_pneumatic.setDefaultCommand(m_pneumaticControl);
+    m_arm.setDefaultCommand(m_velocity);
   }
 
   private void configureButtonBindings(){ 
     
-    new JoystickButton(analogstuff,5)
-    .whenPressed(m_autoBalance);
+    new JoystickButton(analogstuff, 1)
+    .toggleWhenPressed(m_pneumaticControl);
+    
+    // new JoystickButton(joystickone,5)
+    // .whenPressed(m_autoBalance);
+
+    // new JoystickButton(xbox, 3)
+    // .whenPressed(m_autoBalance);
   }
 
+  public Joystick getJoystick() {
+    return joystickone;
+  }
+
+  public XboxController getXbox() {
+    return xbox;
+  }
 }

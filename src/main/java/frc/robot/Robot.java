@@ -59,8 +59,8 @@ public class Robot extends TimedRobot {
     CameraServer.startAutomaticCapture(0);
     CameraServer.startAutomaticCapture(1);
 
-    m_robotContainer.m_gyro.calibrate();
-    System.out.println("Calibrate!!");
+    // m_robotContainer.m_gyro.calibrate();
+    //System.out.println("Calibrate!!");
 
   }
 
@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
     startTime = Timer.getFPGATimestamp();
     //RobotContainer.lightSystem.getAllianceColor();
     // m_robotContainer.autoCommand.schedule();
+    CommandScheduler.getInstance().schedule(m_robotContainer.m_auto);
   }
 
   /**

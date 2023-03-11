@@ -11,9 +11,11 @@ public class SolenoidCommand extends CommandBase {
 
   private final PneumaticBoard m_pneumatics;
   private Joystick m_controller;
-  public SolenoidCommand(PneumaticBoard pneumatics, Joystick analogstuff){
+  private XboxController m_box;
+  public SolenoidCommand(PneumaticBoard pneumatics, Joystick analogstuff, XboxController controller){
     m_pneumatics = pneumatics;
     m_controller = analogstuff;
+    m_box = controller;
     addRequirements(m_pneumatics);
   }
 
@@ -24,10 +26,10 @@ public class SolenoidCommand extends CommandBase {
   @Override
   public void execute() {
     
-    if(m_controller.getRawButton(1)){
+    if(m_controller.getRawButton(1) || m_box.getLeftStickButtonPressed()){
          m_pneumatics.TrueSolenoid();
      }
-     else if(m_controller.getRawButton(2)){
+     else if(m_controller.getRawButton(2) || m_box.getRightStickButtonPressed()){
        m_pneumatics.FalseSolenoid();
      }
   }

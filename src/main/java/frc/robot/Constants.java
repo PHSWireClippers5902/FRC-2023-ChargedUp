@@ -67,6 +67,36 @@ public final class Constants{
       public static final int LinkButton = 7;
       public static final int ControllerPort = 0;
   }
+  public static final double g = 9.80665;
+  public static final class ArmConstants{
+    public static final int LowerArmMotorOnePort = 5; 
+    public static final int LowerArmMotorTwoPort = 6;
+    public static final int UpperArmMotorPort = 7;
+    public static final int upperArmTopSwitchPort = 5;
+    public static final int upperArmBottomSwitchPort = 7;
+  //   public static final int lowerArmTopSwitchPort = 2;
+    public static final int lowerArmSwitchPort = 3;
+    public static final double UpperRange = 20;
+    public static final double LowerRange = 25;
+    
+    public static final double LowerArmMassOne = 0.15;
+    public static final double LowerArmMassTwo = 1.51;
+    public static final double LowerArmMassThree = 0.984;
+    public static final double LowerArmMassFour = 0.5;
+
+    public static final double LowerArmLength = 0.6795;
+
+    public static final double LowerArmLengthOne = 0.114;
+    public static final double LowerArmLengthTwo = 0.178;
+    public static final double LowerArmLengthThree = LowerArmLength/2;
+
+
+    public static final double UpperArmMass = .713;
+    public static final double ClawMass = .98;
+    public static final double UpperArmLength = 0.889;
+
+}
+
   public static final class FlyWheelConstants{
       public static final int motorOnePort = 7;
       public static final int motorTwoPort = 8;

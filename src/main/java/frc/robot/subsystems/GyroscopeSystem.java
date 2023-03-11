@@ -13,7 +13,7 @@ import java.lang.Math;
 public class GyroscopeSystem extends SubsystemBase {
   /** Creates a new GyroscopeSystem. */
 
-  AHRS m_gyroscope; //https://robotpy.readthedocs.io/projects/navx/en/stable/api.html is documentation I think - tim
+  AHRS m_gyroscope; //h    is documentation I think - tim
   double Rolloffset, Pitchoffset, YawOffset;
   boolean isZeroed;
 
@@ -42,7 +42,7 @@ public class GyroscopeSystem extends SubsystemBase {
   }
 
   public boolean isTilted(char axis){ // check for if the tilt angle is enough to move the robo
-    return Math.abs(getTilt(axis)) > 2.5;   
+    return Math.abs(getTilt(axis)) > 5;   
   }
 
 
