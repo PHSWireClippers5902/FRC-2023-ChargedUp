@@ -31,6 +31,7 @@ import static frc.robot.Constants.ClimbConstants;
 import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.subsystems.GyroscopeSystem;
 import frc.robot.commands.AutoBalance;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 //import frc.robot.subsystems.AccelerometerSystem;
 
 public class RobotContainer {
@@ -40,20 +41,20 @@ public class RobotContainer {
     public final PneumaticBoard m_pneumatic = new PneumaticBoard();
     public final GyroscopeSystem m_gyro = new GyroscopeSystem();
     public final ArmSystem m_arm = new ArmSystem();
-
+    
     //Controller
-    XboxController xbox = new XboxController(ControllerConstants.ControllerPort);
+    CommandXboxController xbox = new CommandXboxController(ControllerConstants.ControllerPort);
     Joystick joystickone = new Joystick(2);
     Joystick joysticktwo = new Joystick(1);
     Joystick analogstuff = new Joystick(0);
     
     //Commands
-    public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox, joystickone, joysticktwo);
+    public final DriveWithTank m_TeleDrive = new DriveWithTank(m_tankSystem, xbox);
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
     public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
     public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
     public AutoCommand m_auto = new AutoCommand(m_tankSystem, m_pneumatic);
-  
+
   //Default Constructor
   public RobotContainer(){
     m_gyro.calibrate();
@@ -67,21 +68,21 @@ public class RobotContainer {
 
   private void configureButtonBindings(){ 
     
-    new JoystickButton(analogstuff, 1)
-    .toggleWhenPressed(m_pneumaticControl);
+    // new JoystickButton(analogstuff, 1)
+    // .toggleWhenPressed(m_pneumaticControl);
     
     // new JoystickButton(joystickone,5)
-    // .whenPressed(m_autoBalance);
+    // .whileHeld(m_autoBalance);
 
-    // new JoystickButton(xbox, 3)
-    // .whenPressed(m_autoBalance);
-  }
+    // xbox.a().whileTrue(m_autoBalance);
+    //Left turns positive, right turns negative (only) 
+  } 
 
   public Joystick getJoystick() {
     return joystickone;
   }
 
-  public XboxController getXbox() {
+  public CommandXboxController getXbox() {
     return xbox;
   }
 

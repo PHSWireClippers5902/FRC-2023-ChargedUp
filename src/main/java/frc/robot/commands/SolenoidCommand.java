@@ -4,15 +4,15 @@ import frc.robot.RobotContainer;
 
 import frc.robot.subsystems.PneumaticBoard;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 public class SolenoidCommand extends CommandBase {
 
   private final PneumaticBoard m_pneumatics;
   private Joystick m_controller;
-  private XboxController m_box;
-  public SolenoidCommand(PneumaticBoard pneumatics, Joystick analogstuff, XboxController controller){
+  private CommandXboxController m_box;
+  public SolenoidCommand(PneumaticBoard pneumatics, Joystick analogstuff, CommandXboxController controller){
     m_pneumatics = pneumatics;
     m_controller = analogstuff;
     m_box = controller;
@@ -26,10 +26,10 @@ public class SolenoidCommand extends CommandBase {
   @Override
   public void execute() {
     
-    if(m_controller.getRawButton(1) || m_box.getLeftStickButtonPressed()){
+    if(m_box.leftStick().getAsBoolean()){
          m_pneumatics.TrueSolenoid();
      }
-     else if(m_controller.getRawButton(2) || m_box.getRightStickButtonPressed()){
+     else if(m_box.rightStick().getAsBoolean()){
        m_pneumatics.FalseSolenoid();
      }
   }

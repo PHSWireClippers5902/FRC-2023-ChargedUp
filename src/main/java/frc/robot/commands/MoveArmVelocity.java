@@ -7,15 +7,15 @@ import frc.robot.subsystems.ArmSystem;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.Constants;
 import java.lang.Math;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class MoveArmVelocity extends CommandBase {
     private Joystick joystickone, joysticktwo;
     private ArmSystem arm;
-    private XboxController xbox;
+    private CommandXboxController xbox;
     private double lowervelocity, uppervelocity;
 
-    public MoveArmVelocity(Joystick joystickone, Joystick joysticktwo, XboxController xbox, ArmSystem arm){
+    public MoveArmVelocity(Joystick joystickone, Joystick joysticktwo, CommandXboxController xbox, ArmSystem arm){
         this.joystickone = joystickone;
         this.joysticktwo = joysticktwo;
         this.xbox = xbox;
@@ -32,7 +32,7 @@ public class MoveArmVelocity extends CommandBase {
         uppervelocity = xbox.getRightY() * 0.2;
         arm.setUpperSpeed(uppervelocity);
 
-        System.out.println("lower: " + lowervelocity + " upper: " + uppervelocity);
+        // System.out.println("lower: " + lowervelocity + " upper: " + uppervelocity);
     }
     @Override
     public void end(boolean interrupted) {

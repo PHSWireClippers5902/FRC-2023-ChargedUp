@@ -19,7 +19,7 @@ public class AutoBalance extends CommandBase {
   public AutoBalance(GyroscopeSystem gyro, TankDrive tank) {
     m_gyro = gyro;
     m_tank = tank;
-    kP = 0.04;
+    kP = 0.025;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_gyro, m_tank);
   }
@@ -27,21 +27,26 @@ public class AutoBalance extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isTilted = m_gyro.isTilted('y');
+    isTilted = m_gyro.isTilted('p');
   }
 // use linear filter ????????????
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isTilted = m_gyro.isTilted('y');
+    isTilted = m_gyro.isTilted('p');
     SmartDashboard.putBoolean("tilted", isTilted);
-    SmartDashboard.putNumber("tank numero", -kP*m_gyro.getTilt('y'));
+    SmartDashboard.putNumber("tank numero", -kP*m_gyro.getTilt('p'));
     if (isTilted){
-      m_tank.drive(-kP*m_gyro.getTilt('y'), -kP*m_gyro.getTilt('y'));
+      m_tank.drive(-kP*m_gyro.getTilt('p'), -kP*m_gyro.getTilt('p'));
     }
     System.out.println("AutoBalance is running, is tilted: " + isTilted);
   }
 
+  @Override
+  public void end(boolean interrupted){
+    m_tank.breaks();
+    System.out.print("broke");
+  }
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

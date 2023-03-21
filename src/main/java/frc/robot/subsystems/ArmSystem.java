@@ -89,15 +89,15 @@ public class ArmSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Lower Arm Position", getLowerPosition());
-    // SmartDashboard.putNumber("Lower Arm Two Position", lowerEncoderTwo.getPosition());
-    SmartDashboard.putNumber("Upper Arm Position", getUpperPosition());
-    SmartDashboard.putNumber("Lower Arm One Speed", upperEncoder.getVelocity());
-    SmartDashboard.putNumber("Lower Arm Two Speed", upperEncoder.getVelocity());
-    SmartDashboard.putNumber("Upper Arm Speed", upperEncoder.getVelocity());
-    SmartDashboard.putBoolean("Upper Top Switch", upperTopSwitch.get());
-    SmartDashboard.putBoolean("Upper Bottom Switch", upperBottomSwitch.get());
-    SmartDashboard.putBoolean("Lower Switch", lowerSwitch.get());
+    // SmartDashboard.putNumber("Lower Arm Position", getLowerPosition());
+    // // SmartDashboard.putNumber("Lower Arm Two Position", lowerEncoderTwo.getPosition());
+    // SmartDashboard.putNumber("Upper Arm Position", getUpperPosition());
+    // SmartDashboard.putNumber("Lower Arm One Speed", upperEncoder.getVelocity());
+    // SmartDashboard.putNumber("Lower Arm Two Speed", upperEncoder.getVelocity());
+    // SmartDashboard.putNumber("Upper Arm Speed", upperEncoder.getVelocity());
+    // SmartDashboard.putBoolean("Upper Top Switch", upperTopSwitch.get());
+    // SmartDashboard.putBoolean("Upper Bottom Switch", upperBottomSwitch.get());
+    // SmartDashboard.putBoolean("Lower Switch", lowerSwitch.get());
   }
   public void setLowerVoltage(double voltage){
     lowerMotorOne.setVoltage(voltage);
@@ -149,8 +149,8 @@ public class ArmSystem extends SubsystemBase {
     double alpha = theta + (phi - Math.PI);
     double upperTorque = Constants.g * Math.cos(alpha) * ArmConstants.UpperArmLength * ((ArmConstants.UpperArmMass*.5) + ArmConstants.ClawMass);
     double voltage = 12 * ((upperTorque/260) + (angularspeed/567.6)); //Angular speed in deg/s, I think
-    SmartDashboard.putNumber("UpperTorque", upperTorque);
-    SmartDashboard.putNumber("UpperVoltage", voltage);
+    // SmartDashboard.putNumber("UpperTorque", upperTorque);
+    // SmartDashboard.putNumber("UpperVoltage", voltage);
     
     return voltage;
   }
@@ -168,8 +168,8 @@ public class ArmSystem extends SubsystemBase {
     double torqueThree = ArmConstants.ClawMass * Constants.g * Math.cos(theta - beta) * directLengthT;
     double torque = torqueOne + torqueTwo + torqueThree;
     double voltage = 12 * ((torque/260) + (angularspeed/567.6));
-    SmartDashboard.putNumber("LowerTorque", torque);
-    SmartDashboard.putNumber("LowerVoltage", voltage);
+    // SmartDashboard.putNumber("LowerTorque", torque);
+    // SmartDashboard.putNumber("LowerVoltage", voltage);
     return voltage;
   }
 }

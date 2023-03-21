@@ -20,7 +20,7 @@ public class GyroscopeSystem extends SubsystemBase {
   public GyroscopeSystem() {
     m_gyroscope = new AHRS(I2C.Port.kMXP);
     isZeroed = false;
-    SmartDashboard.putBoolean("isZeroed", isZeroed);
+    // SmartDashboard.putBoolean("isZeroed", isZeroed);
   }
 
   public void calibrate(){
@@ -57,10 +57,11 @@ public class GyroscopeSystem extends SubsystemBase {
     }
     // This method will be called once per scheduler run
     //System.out.println("GYro says: " + m_gyroscope.isConnected() + m_gyroscope.isCalibrating());
-    SmartDashboard.putNumber("Yaw", getTilt('y')); // turning left right
-    SmartDashboard.putNumber("Roll", getTilt('r')); //on side
-    SmartDashboard.putNumber("Pitch", getTilt('p')); //pitch up and down
-    SmartDashboard.putBoolean("isZeroed", isZeroed); //
+
+    // SmartDashboard.putNumber("Yaw", getTilt('y')); // turning left right
+    // SmartDashboard.putNumber("Roll", getTilt('r')); //on side
+    // SmartDashboard.putNumber("Pitch", getTilt('p')); //pitch up and down
+    // SmartDashboard.putBoolean("isZeroed", isZeroed); //
 
   }
 }
