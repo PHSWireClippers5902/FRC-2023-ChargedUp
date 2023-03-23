@@ -11,6 +11,7 @@ import org.opencv.core.Mat;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import static frc.robot.Constants.ArmConstants.*;
 import frc.robot.Constants.ArmConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -18,22 +19,27 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 
 public class ArmSystem extends SubsystemBase {
   private CANSparkMax upperMotor, lowerMotorOne, lowerMotorTwo;
-  private SparkMaxPIDController upperController, lowerControllerOne, lowerControllerTwo;
+  private DCMotor upperMotorModel, lowerMotorModel;
+  // private SparkMaxPIDController upperController, lowerControllerOne, lowerControllerTwo;
+  private ProfiledPIDController upperPID, lowerPID;
   private RelativeEncoder upperEncoder, lowerEncoderOne, lowerEncoderTwo;
   private DigitalInput upperTopSwitch, upperBottomSwitch, lowerSwitch;
+  private ArmFF feedforward;
 
 
   public ArmSystem(){
     //Initialize Motors
-    upperMotor = new CANSparkMax(ArmConstants.UpperArmMotorPort, MotorType.kBrushless);
-    lowerMotorOne = new CANSparkMax(ArmConstants.LowerArmMotorOnePort, MotorType.kBrushless);
-    lowerMotorTwo = new CANSparkMax(ArmConstants.LowerArmMotorTwoPort, MotorType.kBrushless);
+    upperMotor = new CANSparkMax(UpperArmMotorPort, MotorType.kBrushless);
+    lowerMotorOne = new CANSparkMax(LowerArmMotorOnePort, MotorType.kBrushless);
+    lowerMotorTwo = new CANSparkMax(LowerArmMotorTwoPort, MotorType.kBrushless);
 
     //Configure Motors
     upperMotor.restoreFactoryDefaults();
@@ -55,15 +61,19 @@ public class ArmSystem extends SubsystemBase {
     lowerEncoderTwo.setPositionConversionFactor(3.6);
     upperEncoder.setPositionConversionFactor(3.6);
 
+    //Model Motor
+    lowerMotorModel = DCMotor.getNEO(2).withReduction(ArmConstants.GearReduction);
+    upperMotorModel = DCMotor.getNEO(1).withReduction(ArmConstants.GearReduction);
+
+    feedforward = new ArmFF(lowerMotorModel, upperMotorModel);
+
     //Reset Encoders
     lowerEncoderOne.setPosition(-135);
     lowerEncoderTwo.setPosition(-135);
     upperEncoder.setPosition(15);
 
-    //Get motor PID controllers
-    // upperController = upperMotor.getPIDController();
-    // lowerControllerOne = lowerMotorOne.getPIDController();
-    // lowerControllerTwo = lowerMotorTwo.getPIDController();
+    upperPID = new ProfiledPIDController(upperkP, upperkI, upperkD, null);
+    lowerPID = new ProfiledPIDController(lowerkP, lowerkI, lowerkD, null);
 
 
     // //Configure PID constants (WARNING!! Arbitrary!! Tune these)
@@ -142,34 +152,34 @@ public class ArmSystem extends SubsystemBase {
   public double getUpperSpeed(){
     return upperEncoder.getVelocity();
   }
-
-  public double calculateFeedForwardUpper(double lowerangle, double upperangle, double angularspeed){
-    double theta = Math.toRadians(lowerangle);
-    double phi = Math.toRadians(upperangle);
-    double alpha = theta + (phi - Math.PI);
-    double upperTorque = Constants.g * Math.cos(alpha) * ArmConstants.UpperArmLength * ((ArmConstants.UpperArmMass*.5) + ArmConstants.ClawMass);
-    double voltage = 12 * ((upperTorque/260) + (angularspeed/567.6)); //Angular speed in deg/s, I think
-    // SmartDashboard.putNumber("UpperTorque", upperTorque);
-    // SmartDashboard.putNumber("UpperVoltage", voltage);
+  /** Archaic, infantile feedforward; doesn't even utilize the Euler-Lagrange equations */
+  // public double calculateFeedForwardUpper(double lowerangle, double upperangle, double angularspeed){
+  //   double theta = Math.toRadians(lowerangle);
+  //   double phi = Math.toRadians(upperangle);
+  //   double alpha = theta + (phi - Math.PI);
+  //   double upperTorque = Constants.g * Math.cos(alpha) * ArmConstants.UpperArmLength * ((ArmConstants.UpperArmMass*.5) + ArmConstants.ClawMass);
+  //   double voltage = 12 * ((upperTorque/260) + (angularspeed/567.6)); //Angular speed in deg/s, I think
+  //   // SmartDashboard.putNumber("UpperTorque", upperTorque);
+  //   // SmartDashboard.putNumber("UpperVoltage", voltage);
     
-    return voltage;
-  }
+  //   return voltage;
+  // }
 
-  public double calculateFeedForwardLower(double lowerangle, double upperangle, double angularspeed){
-    double theta = Math.toRadians(lowerangle);
-    double phi = Math.toRadians(upperangle);
-    double torqueOne = Constants.g * Math.cos(theta) *
-      ((ArmConstants.LowerArmMassTwo * ArmConstants.LowerArmLengthOne) + (ArmConstants.LowerArmMassTwo * ArmConstants.LowerArmLengthTwo) + (ArmConstants.LowerArmMassThree * ArmConstants.LowerArmLengthThree) + (ArmConstants.LowerArmMassFour * ArmConstants.LowerArmLength));
-    double directLengthL = Math.sqrt(Math.pow(ArmConstants.UpperArmLength/2, 2) + Math.pow(ArmConstants.LowerArmLength, 2) - (ArmConstants.LowerArmLength * ArmConstants.UpperArmLength * Math.cos(phi)));
-    double epsilon = Math.asin((ArmConstants.UpperArmLength*Math.sin(phi))/(2*directLengthL));
-    double torqueTwo = ArmConstants.UpperArmMass * Constants.g * Math.cos(theta - epsilon) * directLengthL;
-    double directLengthT = Math.sqrt(Math.pow(ArmConstants.UpperArmLength, 2) + Math.pow(ArmConstants.LowerArmLength, 2) - (2 * ArmConstants.LowerArmLength * ArmConstants.UpperArmLength * Math.cos(phi)));
-    double beta = Math.asin((ArmConstants.UpperArmLength * Math.sin(phi))/directLengthT);
-    double torqueThree = ArmConstants.ClawMass * Constants.g * Math.cos(theta - beta) * directLengthT;
-    double torque = torqueOne + torqueTwo + torqueThree;
-    double voltage = 12 * ((torque/260) + (angularspeed/567.6));
-    // SmartDashboard.putNumber("LowerTorque", torque);
-    // SmartDashboard.putNumber("LowerVoltage", voltage);
-    return voltage;
-  }
+  // public double calculateFeedForwardLower(double lowerangle, double upperangle, double angularspeed){
+  //   double theta = Math.toRadians(lowerangle);
+  //   double phi = Math.toRadians(upperangle);
+  //   double torqueOne = Constants.g * Math.cos(theta) *
+  //     ((ArmConstants.LowerArmMassTwo * ArmConstants.LowerArmLengthOne) + (ArmConstants.LowerArmMassTwo * ArmConstants.LowerArmLengthTwo) + (ArmConstants.LowerArmMassThree * ArmConstants.LowerArmLengthThree) + (ArmConstants.LowerArmMassFour * ArmConstants.LowerArmLength));
+  //   double directLengthL = Math.sqrt(Math.pow(ArmConstants.UpperArmLength/2, 2) + Math.pow(ArmConstants.LowerArmLength, 2) - (ArmConstants.LowerArmLength * ArmConstants.UpperArmLength * Math.cos(phi)));
+  //   double epsilon = Math.asin((ArmConstants.UpperArmLength*Math.sin(phi))/(2*directLengthL));
+  //   double torqueTwo = ArmConstants.UpperArmMass * Constants.g * Math.cos(theta - epsilon) * directLengthL;
+  //   double directLengthT = Math.sqrt(Math.pow(ArmConstants.UpperArmLength, 2) + Math.pow(ArmConstants.LowerArmLength, 2) - (2 * ArmConstants.LowerArmLength * ArmConstants.UpperArmLength * Math.cos(phi)));
+  //   double beta = Math.asin((ArmConstants.UpperArmLength * Math.sin(phi))/directLengthT);
+  //   double torqueThree = ArmConstants.ClawMass * Constants.g * Math.cos(theta - beta) * directLengthT;
+  //   double torque = torqueOne + torqueTwo + torqueThree;
+  //   double voltage = 12 * ((torque/260) + (angularspeed/567.6));
+  //   // SmartDashboard.putNumber("LowerTorque", torque);
+  //   // SmartDashboard.putNumber("LowerVoltage", voltage);
+  //   return voltage;
+  // }
 }

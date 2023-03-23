@@ -1,5 +1,7 @@
 package frc.robot;
 
+import  edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 public final class Constants{
     public static final class VisionConstants{
         public static final double Targetheight = 40.5;
@@ -61,7 +63,18 @@ public final class Constants{
     public static final int lowerArmSwitchPort = 3;
     public static final double UpperRange = 20;
     public static final double LowerRange = 25;
+
+    public static final double lowerkP = 0.1;
+    public static final double lowerkI = 0;
+    public static final double lowerkD = 0.001;
     
+    public static final double upperkP = 0.1;
+    public static final double upperkI = 0;
+    public static final double upperkD = 0.001;
+    
+    //WIP
+    public static final TrapezoidProfile.State upperConstraints = new TrapezoidProfile.State(null, null)
+
     public static final double LowerArmMassOne = 0.15;
     public static final double LowerArmMassTwo = 1.51;
     public static final double LowerArmMassThree = 0.984;
@@ -78,6 +91,16 @@ public final class Constants{
     public static final double ClawMass = .98;
     public static final double UpperArmLength = 0.889;
 
+    public static final double lowerMass = 1;
+    public static final double lowerLength = 1;
+    public static final double lowerMomentInertia = 1;
+    public static final double lowerCenterGravityRadius = 1;
+    public static final double upperMass = 1;
+    public static final double upperLength = 1;
+    public static final double upperMomentInertia = 1;
+    public static final double upperCenterGravityRadius = 1;
+
+    public static final double GearReduction = (34/18)*100;
 }
 
   public static final class FlyWheelConstants{
