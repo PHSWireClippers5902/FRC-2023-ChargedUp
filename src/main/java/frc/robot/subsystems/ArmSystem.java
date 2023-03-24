@@ -24,12 +24,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+
 
 public class ArmSystem extends SubsystemBase {
   private CANSparkMax upperMotor, lowerMotorOne, lowerMotorTwo;
   private DCMotor upperMotorModel, lowerMotorModel;
   // private SparkMaxPIDController upperController, lowerControllerOne, lowerControllerTwo;
-  private ProfiledPIDController upperPID, lowerPID;
   private RelativeEncoder upperEncoder, lowerEncoderOne, lowerEncoderTwo;
   private DigitalInput upperTopSwitch, upperBottomSwitch, lowerSwitch;
   private ArmFF feedforward;
@@ -51,15 +55,22 @@ public class ArmSystem extends SubsystemBase {
 
     lowerMotorTwo.follow(lowerMotorOne,true);
 
+    upperMotor.setClosedLoopRampRate(10);
+    lowerMotorOne.setClosedLoopRampRate(10);
+    lowerMotorTwo.setClosedLoopRampRate(10);
+    upperMotor.setOpenLoopRampRate(10);
+    lowerMotorOne.setClosedLoopRampRate(10);
+    lowerMotorTwo.setClosedLoopRampRate(10);
+
     //Get encoders
     lowerEncoderOne = lowerMotorOne.getEncoder();
     lowerEncoderTwo = lowerMotorTwo.getEncoder();
     upperEncoder = upperMotor.getEncoder();
 
     //Encoder Scale factor? To Degrees?
-    lowerEncoderOne.setPositionConversionFactor(3.6);
-    lowerEncoderTwo.setPositionConversionFactor(3.6);
-    upperEncoder.setPositionConversionFactor(3.6);
+    lowerEncoderOne.setPositionConversionFactor((360/GearReduction));
+    lowerEncoderTwo.setPositionConversionFactor(360/GearReduction);
+    upperEncoder.setPositionConversionFactor(360/GearReduction);
 
     //Model Motor
     lowerMotorModel = DCMotor.getNEO(2).withReduction(ArmConstants.GearReduction);
@@ -72,22 +83,17 @@ public class ArmSystem extends SubsystemBase {
     lowerEncoderTwo.setPosition(-135);
     upperEncoder.setPosition(15);
 
-    upperPID = new ProfiledPIDController(upperkP, upperkI, upperkD, null);
-    lowerPID = new ProfiledPIDController(lowerkP, lowerkI, lowerkD, null);
+    // upperMotor.setSoftLimit(SoftLimitDirection.kForward, 35);
+    // upperMotor.setSoftLimit(SoftLimitDirection.kReverse, -5);
+
+    // lowerMotorOne.setSoftLimit(SoftLimitDirection.kForward, -110);
+    // lowerMotorTwo.setSoftLimit(SoftLimitDirection.kForward, -110);
+
+    // lowerMotorOne.setSoftLimit(SoftLimitDirection.kReverse, -160);
+    // lowerMotorTwo.setSoftLimit(SoftLimitDirection.kReverse, -160);
 
 
-    // //Configure PID constants (WARNING!! Arbitrary!! Tune these)
-    // upperController.setP(.1);
-    // lowerControllerOne.setP(.1);
-    // lowerControllerTwo.setP(.1);
-
-    // upperController.setD(.05);
-    // lowerControllerOne.setD(.05);
-    // lowerControllerTwo.setD(.05);
-
-    // upperController.setOutputRange(-.3, .3);
-    // lowerControllerOne.setOutputRange(-.3, .3);
-    // lowerControllerTwo.setOutputRange(-.3, .3);
+    feedforward = new ArmFF(lowerMotorModel, upperMotorModel);
 
     //Limit Switches
     upperTopSwitch = new DigitalInput(ArmConstants.upperArmTopSwitchPort);
@@ -99,16 +105,17 @@ public class ArmSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SmartDashboard.putNumber("Lower Arm Position", getLowerPosition());
-    // // SmartDashboard.putNumber("Lower Arm Two Position", lowerEncoderTwo.getPosition());
-    // SmartDashboard.putNumber("Upper Arm Position", getUpperPosition());
-    // SmartDashboard.putNumber("Lower Arm One Speed", upperEncoder.getVelocity());
-    // SmartDashboard.putNumber("Lower Arm Two Speed", upperEncoder.getVelocity());
-    // SmartDashboard.putNumber("Upper Arm Speed", upperEncoder.getVelocity());
+    SmartDashboard.putNumber("Lower Arm Position", getLowerPosition());
+    SmartDashboard.putNumber("Lower Arm Two Position", lowerEncoderTwo.getPosition());
+    SmartDashboard.putNumber("Upper Arm Position", getUpperPosition());
+    SmartDashboard.putNumber("Lower Arm One Speed", upperEncoder.getVelocity());
+    SmartDashboard.putNumber("Lower Arm Two Speed", upperEncoder.getVelocity());
+    SmartDashboard.putNumber("Upper Arm Speed", upperEncoder.getVelocity());
     // SmartDashboard.putBoolean("Upper Top Switch", upperTopSwitch.get());
     // SmartDashboard.putBoolean("Upper Bottom Switch", upperBottomSwitch.get());
     // SmartDashboard.putBoolean("Lower Switch", lowerSwitch.get());
   }
+
   public void setLowerVoltage(double voltage){
     lowerMotorOne.setVoltage(voltage);
   }
@@ -131,14 +138,6 @@ public class ArmSystem extends SubsystemBase {
     lowerMotorOne.set(speed);
   }
 
-  // public void raiseUpperto(double position){
-  //   double scaledPosition = position*ArmConstants.UpperRange;
-  //   upperController.setReference(scaledPosition, CANSparkMax.ControlType.kPosition);
-  // }
-  // public void raiseLowerto(double position){
-  //   double scaledPosition = position*ArmConstants.LowerRange;
-  //   lowerControllerOne.setReference(scaledPosition, CANSparkMax.ControlType.kPosition);
-  // }
 
   public double getLowerPosition(){
     return -1 * lowerEncoderOne.getPosition();
@@ -152,6 +151,21 @@ public class ArmSystem extends SubsystemBase {
   public double getUpperSpeed(){
     return upperEncoder.getVelocity();
   }
+
+  public double lowerFeedForward(Vector<N2> position){
+    Vector<N2> positionRAD = VecBuilder.fill(
+      Math.toRadians(position.get(0, 0)),
+      Math.toRadians(position.get(1, 0)));
+    return feedforward.feedforward(positionRAD).get(0, 0);
+  }
+
+  public double upperFeedForward(Vector<N2> position){
+    Vector<N2> positionRAD = VecBuilder.fill(
+      Math.toRadians(position.get(0, 0)),
+      Math.toRadians(position.get(1, 0)));
+    return feedforward.feedforward(positionRAD).get(1, 0);
+  }
+
   /** Archaic, infantile feedforward; doesn't even utilize the Euler-Lagrange equations */
   // public double calculateFeedForwardUpper(double lowerangle, double upperangle, double angularspeed){
   //   double theta = Math.toRadians(lowerangle);

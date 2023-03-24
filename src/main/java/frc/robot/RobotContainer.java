@@ -53,6 +53,7 @@ public class RobotContainer {
     public final SolenoidCommand m_pneumaticControl = new SolenoidCommand(m_pneumatic, analogstuff, xbox);
     public final AutoBalance m_autoBalance = new AutoBalance(m_gyro, m_tankSystem);
     public final MoveArmVelocity m_velocity = new MoveArmVelocity(joystickone, joysticktwo, xbox, m_arm);
+    public final MoveArmPosition m_position = new MoveArmPosition(xbox, m_arm);
     public AutoCommand m_auto = new AutoCommand(m_tankSystem, m_pneumatic);
 
   //Default Constructor
@@ -63,10 +64,11 @@ public class RobotContainer {
     //Default Commands
     m_tankSystem.setDefaultCommand(m_TeleDrive);
     m_pneumatic.setDefaultCommand(m_pneumaticControl);
-    m_arm.setDefaultCommand(m_velocity);
+    m_arm.setDefaultCommand(m_position);
   }
 
   private void configureButtonBindings(){ 
+    xbox.b().onTrue(new InstantCommand(() -> {m_position.setLowerSetpoint(40);m_position.setUpperSetpoint(120);}));
     
     // new JoystickButton(analogstuff, 1)
     // .toggleWhenPressed(m_pneumaticControl);

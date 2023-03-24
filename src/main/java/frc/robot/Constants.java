@@ -64,6 +64,7 @@ public final class Constants{
     public static final double UpperRange = 20;
     public static final double LowerRange = 25;
 
+    //Not tuned or anything
     public static final double lowerkP = 0.1;
     public static final double lowerkI = 0;
     public static final double lowerkD = 0.001;
@@ -73,7 +74,9 @@ public final class Constants{
     public static final double upperkD = 0.001;
     
     //WIP
-    public static final TrapezoidProfile.State upperConstraints = new TrapezoidProfile.State(null, null)
+    public static final TrapezoidProfile.Constraints upperConstraints = new TrapezoidProfile.Constraints(15, 5);
+    public static final TrapezoidProfile.Constraints lowerConstraints = new TrapezoidProfile.Constraints(15, 5);
+
 
     public static final double LowerArmMassOne = 0.15;
     public static final double LowerArmMassTwo = 1.51;
@@ -87,20 +90,17 @@ public final class Constants{
     public static final double LowerArmLengthThree = LowerArmLength/2;
 
 
-    public static final double UpperArmMass = .713;
-    public static final double ClawMass = .98;
-    public static final double UpperArmLength = 0.889;
+    public static final double lowerMass = 3.144;
+    public static final double lowerLength = 0.6795;
+    public static final double lowerMomentInertia = .1637;
+    public static final double lowerCenterGravityRadius = .3125;
 
-    public static final double lowerMass = 1;
-    public static final double lowerLength = 1;
-    public static final double lowerMomentInertia = 1;
-    public static final double lowerCenterGravityRadius = 1;
-    public static final double upperMass = 1;
-    public static final double upperLength = 1;
-    public static final double upperMomentInertia = 1;
-    public static final double upperCenterGravityRadius = 1;
+    public static final double upperMass = 1.693;
+    public static final double upperLength = .889;
+    public static final double upperMomentInertia = .2406;
+    public static final double upperCenterGravityRadius = .702;
 
-    public static final double GearReduction = (34/18)*100;
+    public static final double GearReduction = ((34/18)*100);
 }
 
   public static final class FlyWheelConstants{
